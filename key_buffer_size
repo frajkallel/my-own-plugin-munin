@@ -8,7 +8,7 @@
 # [key_buffer_size]
 # user root
 # env.mysql_myi_files        /var/lib/mysql
-#
+
 
 if [ "$1" = "autoconf" ]; then
         echo yes
