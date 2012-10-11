@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# (c) 2012, Fraj KALLEL <frajkallel@gmail.com>
+# Munin plugin to monitor the innodb_buffer_pool_size variable of MySQL  server for optimize it if it's necessary
+# running on the server.
+#
+#config example for /etc/munin/plugin-conf.d/munin-node
+# [innodb_buffer_pool_size]
+# user root
+# env.mysql_myi_files        /var/lib/mysql
+DBUSER=root
+DBPWD=password_root
+SOCKET=/var/run/mysqld/mysqld.sock
+
+if [ "$1" = "autoconf" ]; then
+        echo yes
+        exit 0
+fi
+
+if [ "$1" = "config" ]; then
+
+echo "graph_title Mysql Innodb Buffer Pool Size"
+echo "graph_args -l 0"
+echo "graph_category Mysql"
+echo "graph_info  monitor the innodb_buffer_pool_size variable of MySQL  server for optimize it if necessary"
+echo "graph_vlabel MB"
+echo "innodb_buffer_pool_size.label innodb_buffer_pool_size MB"
+echo "innodb_buffer_pool_size.type GAUGE"
+echo "innodb_buffer_pool_size.draw LINE2"
+
+	exit 0
+
+fi
+
+innodb_indexes=$(mysql -S $SOCKET -u$DBUSER -p$DBPWD -Bse "/*!50000 SELECT IFNULL(SUM(INDEX_LENGTH),0) from information_schema.TABLES where ENGINE='InnoDB' */")
+innodb_data=$(mysql -S $SOCKET -u$DBUSER -p$DBPWD -Bse "/*!50000 SELECT IFNULL(SUM(DATA_LENGTH),0) from information_schema.TABLES where ENGINE='InnoDB' */")
+
+SUM_INNOBD_B=$(( $innodb_indexes+$innodb_data ))
+INNODB_SIZE_Kb=$(( $SUM_INNOBD_B/1024 ))
+INNODB_SIZE_Mb=$(( $INNODB_SIZE_Kb/1024 ))
+
+
+echo "innodb_buffer_pool_size.value $INNODB_SIZE_Mb"
