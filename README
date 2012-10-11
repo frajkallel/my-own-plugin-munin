@@ -1,2 +1,3 @@
 My own plugin munin
 	* key_buffer_size
+	* innodb_buffer_pool_size
