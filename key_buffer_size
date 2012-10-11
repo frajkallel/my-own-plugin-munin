@@ -37,3 +37,4 @@ MYI_SIZE_Kb=$(find . -name '*.MYI' -exec du '{}' \; 2>&1 | awk '{ s += $1 } END 
 MYI_SIZE_Mb=$(( $MYI_SIZE_Kb/1024 ))
 
 echo "key_buffer_size.value $MYI_SIZE_Mb"
+
