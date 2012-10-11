@@ -4,7 +4,7 @@
 # Munin plugin to monitor the innodb_buffer_pool_size variable of MySQL  server for optimize it if it's necessary
 # running on the server.
 #
-#config example for /etc/munin/plugin-conf.d/munin-node
+# config example for /etc/munin/plugin-conf.d/munin-node
 # [innodb_buffer_pool_size]
 # user root
 # env.mysql_myi_files        /var/lib/mysql
